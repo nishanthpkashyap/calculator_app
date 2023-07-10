@@ -1,38 +1,45 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { calculatorActions } from '../features/calculator/calculatorSlice';
+import { useEffect } from 'react';
+import store from '../app/store';
+import { DigitButton } from './DigitButton';
+import { OperationButton } from './operationButton';
 
-export function Calculator(){
-    const {currentOperand, operation, previousOperand} = useSelector((state)=>state.calculator)
+export function Calculator() {
+    const { currentOperand, operation, previousOperand } = useSelector((state) => state.calculator);
+    const {deleteDigit, evaluate, clear}= calculatorActions;
+    const dispatch = useDispatch();
+
 
     return (
-        <div className="App">
-        <div className='calculator-grid'>
-            <div className='output'>
-            <div className='previous-operand'>
-                {previousOperand} {operation}
+        <div className="calculator-grid">
+            <div className="output">
+                <div className="previous-operand">
+                    {previousOperand} {operation}
                 </div>
-            <div className='current-operand'>
-                {currentOperand}
-                </div>
+                <div className="current-operand">{currentOperand}</div>
             </div>
-            <input type="button" className='span-two' value="A/C"></input>
-            <input type="button"  value="DEL"></input>
-            <input type="button"  value="÷"></input>
-            <input type="button"  value="1"></input>
-            <input type="button"  value="2"></input>
-            <input type="button"  value="3"></input>
-            <input type="button"  value="*"></input>
-            <input type="button"  value="4"></input>
-            <input type="button"  value="5"></input>
-            <input type="button"  value="6"></input>
-            <input type="button"  value="+"></input>
-            <input type="button"  value="7"></input>
-            <input type="button"  value="8"></input>
-            <input type="button"  value="9"></input>
-            <input type="button"  value="-"></input>
-            <input type="button"  value="."></input>
-            <input type="button"  value="0"></input>
-            <input type="button" className='span-two' value="="></input>
-        </div>
+            <button className="span-two" onClick={()=>dispatch(clear())}>A/C</button>
+            <button value="DEL" onClick={()=>dispatch(deleteDigit())}>DEL</button>
+
+            <OperationButton operation="&divide;">&divide;</OperationButton>
+            <DigitButton digit="1">1</DigitButton>
+            <DigitButton digit="2">2</DigitButton>
+            <DigitButton digit="3">3</DigitButton>
+            <OperationButton operation="*">*</OperationButton>
+            <DigitButton digit="4">4</DigitButton>
+            <DigitButton digit="5">5</DigitButton>
+            <DigitButton digit="6">6</DigitButton>
+            <OperationButton operation="+">+</OperationButton>
+            <DigitButton digit="7">7</DigitButton>
+            <DigitButton digit="8">8</DigitButton>
+            <DigitButton digit="9">9</DigitButton>
+            <OperationButton operation="-">-</OperationButton>
+            <DigitButton digit=".">.</DigitButton>
+            <DigitButton digit="0">0</DigitButton>
+
+            <button onClick={()=>dispatch(evaluate())} className="span-two">=</button>
         </div>
     );
 }
+
