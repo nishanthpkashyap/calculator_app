@@ -77,7 +77,7 @@ const {actions, reducer} = createSlice({
 
             //if previous operand, current operand exists, display result 
             else if(state.previousOperand !== "" && state.currentOperand !== ""){
-                state.previousOperand = evaluate(state)
+                state.previousOperand = isNaN(evaluate(state)) ? 0 : evaluate(state);
                 state.operation = payload
                 state.currentOperand = ""
             }

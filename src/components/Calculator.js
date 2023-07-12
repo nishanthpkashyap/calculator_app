@@ -1,23 +1,35 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { calculatorActions } from '../features/calculator/calculatorSlice';
-import { useEffect } from 'react';
-import store from '../app/store';
 import { DigitButton } from './DigitButton';
 import { OperationButton } from './operationButton';
+import { isUndefined } from 'lodash';
 
 export function Calculator() {
     const { currentOperand, operation, previousOperand } = useSelector((state) => state.calculator);
     const {deleteDigit, evaluate, clear}= calculatorActions;
     const dispatch = useDispatch();
 
+    const INDIAN_FORMATTER = new Intl.NumberFormat("en-in", {maximumFractionDigits: 0});
+
+    function formatNumber(number){
+        if(typeof number === 'number'){
+            number = number.toString();
+        }
+        if(number===null || number==="" || isUndefined(number)) 
+            return
+        let [integer, decimal] = number.split(".");
+        integer = INDIAN_FORMATTER.format(integer);
+        if(isUndefined(decimal)) return integer;
+        return `${integer}.${decimal}`;
+    }
 
     return (
         <div className="calculator-grid">
             <div className="output">
                 <div className="previous-operand">
-                    {previousOperand} {operation}
+                    {formatNumber(previousOperand)} {operation}
                 </div>
-                <div className="current-operand">{currentOperand}</div>
+                <div className="current-operand">{formatNumber(currentOperand)}</div>
             </div>
             <button className="span-two" onClick={()=>dispatch(clear())}>A/C</button>
             <button value="DEL" onClick={()=>dispatch(deleteDigit())}>DEL</button>
