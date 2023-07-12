@@ -24,6 +24,7 @@ const evaluate = ({currentOperand, operation, previousOperand}) => {
             result = prev / current; break;
         case "-":
             result = prev - current; break;
+        default: result = "";
     }
     return result;
 }
@@ -86,7 +87,7 @@ const {actions, reducer} = createSlice({
 
             //if current operand and previous operand exists, display result
             if((state.previousOperand || state.previousOperand === 0) && (state.currentOperand || state.currentOperand === 0)){
-                state.currentOperand = evaluate(state);
+                state.currentOperand = isNaN(evaluate(state)) ? "" : evaluate(state);
                 state.operation = ""
                 state.previousOperand = ""
                 state.overwrite = true;
